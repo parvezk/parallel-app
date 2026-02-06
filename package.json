@@ -10,6 +10,7 @@
     "lint:fix": "npm run lint -- --fix",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "test": "node --no-deprecation ./node_modules/.bin/jest",
     "test:coverage": "jest --coverage",

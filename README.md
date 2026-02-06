@@ -55,30 +55,54 @@ Key components and their roles:
 ## Getting Started
 
 ```bash
+npm ci
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser.
 
-## Development
+## GraphQL Playground (Apollo Sandbox)
 
-[Add development guidelines here]
+Test your GraphQL API interactively:
+
+1. Start the dev server: `npm run dev`
+2. Open [Apollo Sandbox](https://studio.apollographql.com/sandbox)
+3. Set endpoint to `http://localhost:3000/api/graphql`
+4. Add auth header: Click the **gear icon** → **Shared headers** → Add `Authorization` with value `Bearer <your-jwt-token>`
+5. Run queries
+
+## Database (Drizzle + TursoDB)
+
+```bash
+# Open Drizzle Studio (visual DB browser)
+npm run db:studio
+
+# Push schema changes directly to DB (dev only)
+npm run db:push
+
+# Generate migration files from schema changes
+npm run db:generate
+
+# Apply migrations
+npm run db:migrate
+```
+
+## Environment Variables
+
+Create `.env.local`:
+
+```bash
+TURSO_CONNECTION_URL="libsql://..."
+TURSO_AUTH_TOKEN="..."
+```
 
 ## Deployment
 
-[Add deployment instructions here]
+Hosted on **AWS Amplify** with Git-based deployments.
 
-## Contributing
+See `amplify.yml` for build configuration.
 
-[Add contribution guidelines here]
+## More Info
 
-## License
-
-[Add license information here]
-# parallel-app
+- **Development guide**: `agents.md`
+- **Architecture & commands**: `CLAUDE.md`
