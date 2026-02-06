@@ -1,6 +1,5 @@
 /**
  * Type definitions for GraphQL Schema (Data Model) ./src/gql
- * Rename to schema.graphql file?
  */
 const schema = `#graphql
 

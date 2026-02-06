@@ -1,0 +1,16 @@
+{
+  "enabled": true,
+  "name": "Generate Migrations",
+  "description": "Auto-generate database migrations when schema.ts is modified",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "src/db/schema.ts"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Run `npm run db:generate` to generate database migrations from the schema changes"
+  }
+}
