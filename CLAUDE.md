@@ -78,6 +78,13 @@ Browser → URQL Client → GraphQL API (Next.js route) → Drizzle ORM → Turs
 enum IssueStatus { BACKLOG, TODO, IN_PROGRESS, DONE }
 ```
 
+## Deployment
+
+Hosted on **AWS Amplify** with Git-based deployments (auto-deploys on push to `main`).
+
+- Build config: `amplify.yml`
+- IAM roles and env vars are configured in the Amplify Console (not in repo)
+
 ## Testing
 
 Tests use Jest + React Testing Library. Test files live next to components: `*.test.tsx`.

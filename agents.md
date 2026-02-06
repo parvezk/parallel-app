@@ -89,6 +89,13 @@ Follow the repo’s GraphQL conventions in `.kiro/steering/api-standard.md`, esp
 - Prefer adding/updating co-located component tests in `src/app/components/*.test.tsx`.
 - Keep tests deterministic; avoid hitting real external services.
 
+## Deployment
+
+Hosted on **AWS Amplify** (Git-based). Pushing to `main` triggers automatic deployment.
+
+- Build spec: `amplify.yml` (in repo root)
+- Environment variables and IAM roles: configured in Amplify Console
+
 ## PR instructions
 
 ### Before you open a PR
