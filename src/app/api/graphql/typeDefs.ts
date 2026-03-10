@@ -32,6 +32,7 @@ type Issue {
   content: String!
   status: IssueStatus!
   createdAt: String!
+  editedAt: String
 }
 
 input CreateIssueInput {

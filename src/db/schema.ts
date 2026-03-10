@@ -25,6 +25,8 @@ const createdAt = () =>
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull();
 
+const editedAt = () => text("edited_at").default(sql`CURRENT_TIMESTAMP`);
+
 export const users = sqliteTable("users", {
   id: id(),
   createdAt: createdAt(),
@@ -43,6 +45,7 @@ export const issues = sqliteTable("issues", {
   content: text("content").notNull(),
   status: text("status").default(IssueStatus.BACKLOG).notNull(),
   createdAt: createdAt(),
+  editedAt: editedAt(),
 });
 
 export const issueRelations = relations(issues, ({ one }) => ({

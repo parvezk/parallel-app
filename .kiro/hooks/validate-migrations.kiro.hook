@@ -1,16 +1,15 @@
 {
   "enabled": true,
   "name": "Validate Migrations",
-  "description": "Auto-generate migrations on schema changes by running npm run db:migrate when SQL migration files are saved",
+  "description": "Apply database migrations by running npm run db:migrate",
   "version": "1",
   "when": {
-    "type": "fileCreated",
-    "patterns": [
-      "migrations/**/*.sql"
-    ]
+    "type": "userTriggered"
   },
   "then": {
     "type": "askAgent",
     "prompt": "Run `npm run db:migrate` to apply the database migrations and verify they execute successfully"
-  }
+  },
+  "workspaceFolderName": "parallel-app",
+  "shortName": "validate-migrations"
 }
