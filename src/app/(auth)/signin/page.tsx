@@ -3,6 +3,7 @@
 import { SIGNIN_MUTATION } from "@/gql/SIGNIN_MUTATION";
 import { setToken } from "@/utils/token";
 import { Button, Input } from "@nextui-org/react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useMutation } from "urql";
@@ -49,6 +50,14 @@ const SigninPage = () => {
           </Button>
         </div>
       </form>
+      <div className="text-center mt-4">
+        <p>
+          Don&apos;t have an account?{" "}
+          <Link href="/signup" className="text-primary hover:underline">
+            Sign up
+          </Link>
+        </p>
+      </div>
     </div>
   );
 };
