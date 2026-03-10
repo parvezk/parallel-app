@@ -1,0 +1,15 @@
+{
+  "enabled": true,
+  "name": "Regenerate API Docs",
+  "description": "Regenerate GraphQL API documentation from the schema",
+  "version": "1",
+  "when": {
+    "type": "userTriggered"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Automatically regenerate GraphQL API documentation: 1) Check if localhost:3000 is responding by running `curl -s http://localhost:3000/api/graphql || echo 'not running'`. 2) If not running, start dev server as background process with `npm run dev`. 3) Wait 5 seconds for server to start. 4) Run `npm run docs:generate`. 5) Report success. Do all steps automatically without waiting for user confirmation."
+  },
+  "workspaceFolderName": "parallel-app",
+  "shortName": "regenerate-docs"
+}
