@@ -11,6 +11,41 @@ import { GQLContext } from "@/types/GQLContext";
 
 const resolvers = {
   Query: {
+    issuesForUser: async (
+      _parent,
+      { email }: { email: string },
+      context: GQLContext,
+    ) => {
+      if (!context.user)
+        throw new GraphQLError("UNAUTHORIZED", { extensions: { code: 401 } });
+
+      try {
+        const user = await db
+          .select()
+          .from(users)
+          .where(eq(users.email, email))
+          .limit(1);
+
+        if (user.length === 0) {
+          throw new GraphQLError("User not found", {
+            extensions: { code: "NOT_FOUND" },
+          });
+        }
+
+        return await db
+          .select()
+          .from(issues)
+          .where(eq(issues.userId, user[0].id))
+          .orderBy(desc(issues.createdAt));
+      } catch (err) {
+        if (err instanceof GraphQLError) throw err;
+        console.error("Failed to fetch issues for user:", err);
+        throw new GraphQLError("Failed to fetch issues", {
+          extensions: { code: "DB_ERROR" },
+        });
+      }
+    },
+
     issues: async (_parent, _args, context: GQLContext) => {
       if (!context.user)
         throw new GraphQLError("ISSUES UNAUTHORIZED", {
@@ -129,20 +164,3 @@ const resolvers = {
 };
 
 export default resolvers;
-
-// TODO: filter issues by user
-/* issuesForUser: async ({ email }: { email: string }, _, context) => {
-  if (!context.user)
-    throw new GraphQLError("UNAUTHORIZED", { extensions: { code: 401 } });
-
-  const user = await db
-    .select()
-    .from(users)
-    .where(eq(users.email, email))
-    .limit(1);
-  if (user.length === 0) {
-    throw new Error("User not found");
-  }
-
-  return await db.select().from(issues).where(eq(issues.userId, user[0].id));
-}, */
