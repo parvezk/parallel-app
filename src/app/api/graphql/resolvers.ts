@@ -1,5 +1,5 @@
 import { db } from "@/db/db";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, and } from "drizzle-orm";
 import { users, issues, IssueStatus } from "@/db/schema";
 import { GraphQLError } from "graphql";
 import { signin, signup } from "@/utils/auth";
@@ -76,7 +76,7 @@ const resolvers = {
       const [updatedIssue] = await db
         .update(issues)
         .set({ [issues.status.name]: status })
-        .where(eq(issues.id, id))
+        .where(and(eq(issues.id, id), eq(issues.userId, context.user.id)))
         .returning();
 
       if (!updatedIssue)
@@ -92,7 +92,7 @@ const resolvers = {
 
       const [deletedIssue] = await db
         .delete(issues)
-        .where(eq(issues.id, id))
+        .where(and(eq(issues.id, id), eq(issues.userId, context.user.id)))
         .returning();
 
       if (!deletedIssue)
