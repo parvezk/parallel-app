@@ -9,11 +9,14 @@ import { Theme, User, UserContextProps } from "./UserContextType";
 
 type UserProviderType = {
   children: ReactNode;
+  initialTheme?: Theme;
 };
 const UserContext = createContext<UserContextProps | undefined>(undefined);
-// TODO: make theme value passable than default to light
-export const UserProvider = ({ children }: UserProviderType) => {
-  const [theme, setTheme] = useState<Theme>("light");
+export const UserProvider = ({
+  children,
+  initialTheme = "light",
+}: UserProviderType) => {
+  const [theme, setTheme] = useState<Theme>(initialTheme);
   const [user, setUser] = useState<User | null>(null);
 
   const toggleTheme = () => {
