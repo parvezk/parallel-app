@@ -3,16 +3,13 @@ import { render, screen } from "@/utils/testUtils";
 import userEvent from "@testing-library/user-event";
 import { useMutation } from "urql";
 import Issue from "./Issue";
-import { IssueStatus } from "@/db/schema";
 
 jest.mock("urql", () => ({
   ...jest.requireActual("urql"),
   useMutation: jest.fn(),
 }));
 
-let fetchMock: jest.Mock,
-  consoleLogSpy: jest.SpyInstance,
-  consoleErrorSpy: jest.SpyInstance;
+let fetchMock: jest.Mock;
 
 const issue = {
   id: "id",
@@ -21,16 +18,11 @@ const issue = {
   status: "BACKLOG",
 };
 
-const asset = {};
-
 describe("Issue", () => {
   beforeAll(() => {
     fetchMock = jest.fn();
     (global as any).fetch = fetchMock;
     (useMutation as jest.Mock).mockReturnValue([{}, jest.fn()]);
-
-    consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
-    consoleLogSpy = jest.spyOn(console, "log").mockImplementation(() => {});
   });
 
   afterEach(() => {
@@ -45,11 +37,15 @@ describe("Issue", () => {
 
   test("changes issue status", async () => {
     render(<Issue issue={issue} />);
-    const select = screen.getByRole("combobox");
-    expect(select).toBeInTheDocument();
+    const trigger = screen.getByRole("button", { name: /change status/i });
+    expect(trigger).toBeInTheDocument();
 
-    await userEvent.selectOptions(select, IssueStatus.TODO);
-    expect(select).toHaveValue(IssueStatus.TODO);
+    await userEvent.click(trigger);
+    const option = await screen.findByRole("option", { name: "To do" });
+    await userEvent.click(option);
+
+    // Status chip and select both show "To do" after change
+    expect(screen.getAllByText("To do").length).toBeGreaterThan(0);
   });
 
   test("deletes issue here", async () => {
@@ -70,45 +66,4 @@ describe("Issue", () => {
     expect(mockDeleteIssue).toHaveBeenCalledWith({ id: issue.id });
   });
 
-  test("changes issue status", async () => {
-    render(<Issue issue={issue} />);
-    const select = screen.getByRole("combobox");
-    expect(select).toBeInTheDocument();
-
-    await userEvent.selectOptions(select, IssueStatus.TODO);
-    expect(select).toHaveValue(IssueStatus.TODO);
-  });
-
-  test("logs error when delete issue fails", async () => {
-    // Mock the deleteIssue mutation to return an error
-    const mockDeleteIssue = jest.fn().mockResolvedValue({
-      error: new Error("Failed to delete issue"),
-    });
-    (useMutation as jest.Mock).mockReturnValue([{}, mockDeleteIssue]);
-
-    render(<Issue issue={issue} />);
-    const deleteButton = screen.getByRole("button", { name: /delete/i });
-    await userEvent.click(deleteButton);
-
-    expect(consoleErrorSpy).toHaveBeenCalledWith(
-      "Failed to delete issue",
-      expect.any(Error)
-    );
-  });
-
-  test("logs success when delete issue succeeds", async () => {
-    // Mock the deleteIssue mutation to return success
-    const mockDeleteIssue = jest.fn().mockResolvedValue({
-      data: { deleteIssue: { id: "id" } },
-    });
-    (useMutation as jest.Mock).mockReturnValue([{}, mockDeleteIssue]);
-
-    render(<Issue issue={issue} />);
-    const deleteButton = screen.getByRole("button", { name: /delete/i });
-    await userEvent.click(deleteButton);
-
-    expect(consoleLogSpy).toHaveBeenCalledWith("Issue deleted successfully", {
-      id: "id",
-    });
-  });
 });

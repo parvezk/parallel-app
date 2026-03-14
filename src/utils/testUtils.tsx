@@ -6,7 +6,7 @@ import userEvent from "@testing-library/user-event";
 // import { UserProvider } from "@/app/context/UserContext";
 import Providers from "@/app/providers";
 
-const client = createClient({
+const _client = createClient({
   url: "http://localhost:3000/api/graphql",
   exchanges: [cacheExchange, fetchExchange],
 });
