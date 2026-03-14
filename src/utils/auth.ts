@@ -6,8 +6,8 @@ import bcrypt from "bcrypt";
 
 const SECRET = "use_an_ENV_VAR";
 
-export const createTokenForUser = (userId: string) => {
-  const token = jwt.sign({ id: userId }, SECRET);
+export const createTokenForUser = (user: { id: string; email: string; createdAt: string }) => {
+  const token = jwt.sign({ id: user.id, email: user.email, createdAt: user.createdAt }, SECRET);
   return token;
 };
 
@@ -17,26 +17,14 @@ export const getUserFromToken = async (header?: string) => {
   }
 
   const token = (header.split("Bearer")[1] ?? "").trim();
-  let id: string;
 
   try {
-    const user = jwt.verify(token, SECRET) as { id: string };
-    id = user.id;
+    const user = jwt.verify(token, SECRET) as { id: string; email: string; createdAt: string };
+    return { id: user.id, email: user.email, createdAt: user.createdAt };
   } catch (e) {
     console.error("invalid jwt", e);
     return null;
   }
-
-  const user = await db.query.users.findFirst({
-    where: eq(users.id, id),
-    columns: {
-      id: true,
-      email: true,
-      createdAt: true,
-    },
-  });
-
-  return user;
 };
 
 export const signin = async ({
@@ -55,7 +43,7 @@ export const signin = async ({
 
   if (!correctPW) return null;
 
-  const token = createTokenForUser(match.id);
+  const token = createTokenForUser(match);
   // eslint-disable-next-line unused-imports/no-unused-vars
   const { password: _, ...user } = match;
 
@@ -80,7 +68,7 @@ export const signup = async ({
     });
 
   const user = rows[0];
-  const token = createTokenForUser(user.id);
+  const token = createTokenForUser(user);
 
   return { user, token };
 };
