@@ -12,7 +12,8 @@ import { GQLContext } from "@/types/GQLContext";
 const resolvers = {
   Query: {
     issues: async (_parent, _args, context: GQLContext) => {
-      if (!context.user)
+      const user = await context.getUser();
+      if (!user)
         throw new GraphQLError("ISSUES UNAUTHORIZED", {
           extensions: { code: 401 },
         });
@@ -21,7 +22,7 @@ const resolvers = {
         return await db
           .select()
           .from(issues)
-          .where(eq(issues.userId, context.user.id))
+          .where(eq(issues.userId, user.id as string))
           .orderBy(desc(issues.createdAt));
       } catch (err) {
         console.error("Failed to fetch issues:", err);
@@ -32,13 +33,14 @@ const resolvers = {
     },
 
     user: async (_parent, _args, context: GQLContext) => {
-      if (!context.user)
+      const currentUser = await context.getUser();
+      if (!currentUser)
         throw new GraphQLError("UNAUTHORIZED", {
           extensions: { code: 401 },
         });
 
       const user = await db.query.users.findFirst({
-        where: eq(users.id, context.user.id),
+        where: eq(users.id, currentUser.id as string),
       });
 
       if (!user)
@@ -52,12 +54,13 @@ const resolvers = {
 
   Mutation: {
     createIssue: async (_parent, { input }, context: GQLContext) => {
-      if (!context.user)
+      const user = await context.getUser();
+      if (!user)
         throw new GraphQLError("UNAUTHORIZED", { extensions: { code: 401 } });
 
       const issueData = {
         ...input,
-        userId: context.user.id,
+        userId: user.id as string,
         status: input.status || IssueStatus.BACKLOG,
       };
 
@@ -71,7 +74,8 @@ const resolvers = {
     },
 
     updateIssueStatus: async (_parent, { id, status }, context: GQLContext) => {
-      if (!context.user)
+      const user = await context.getUser();
+      if (!user)
         throw new GraphQLError("UNAUTHORIZED", { extensions: { code: 401 } });
       const [updatedIssue] = await db
         .update(issues)
@@ -87,7 +91,8 @@ const resolvers = {
     },
 
     deleteIssue: async (_parent, { id }, context: GQLContext) => {
-      if (!context.user)
+      const user = await context.getUser();
+      if (!user)
         throw new GraphQLError("UNAUTHORIZED", { extensions: { code: 401 } });
 
       const [deletedIssue] = await db
