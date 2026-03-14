@@ -1,3 +1,6 @@
+import { NextRequest } from "next/server";
+
 export type GQLContext = {
-  user?: { id?: string; email: string; createdAt?: string } | null;
+  req: NextRequest;
+  getUser: () => Promise<{ id?: string; email: string; createdAt?: string } | null>;
 };

@@ -21,19 +21,24 @@ export async function POST(req: NextRequest) {
   try {
     const { query, variables } = await req.json();
 
-    const context = async (req: NextRequest) => {
-      const user = await getUserFromToken(
-        req.headers.get("authorization") ?? ""
-      );
+    const context = (req: NextRequest) => {
+      let userPromise: Promise<any> | null = null;
 
-      return { req, user };
+      const getUser = () => {
+        if (!userPromise) {
+          userPromise = getUserFromToken(req.headers.get("authorization") ?? "");
+        }
+        return userPromise;
+      };
+
+      return { req, getUser };
     };
 
     const response = await graphql({
       schema,
       source: query,
       variableValues: variables,
-      contextValue: await context(req),
+      contextValue: context(req),
     });
 
     const headers = new Headers(header);
