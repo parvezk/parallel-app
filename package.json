@@ -28,7 +28,7 @@
     "@babel/preset-react": "^7.26.3",
     "@babel/preset-typescript": "^7.26.0",
     "@graphql-tools/schema": "^10.0.30",
-    "@heroui/react": "latest",
+    "@heroui/react": "2.8.10",
     "@heroui/theme": "2.4.26",
     "@libsql/client": "^0.14.0",
     "@urql/exchange-graphcache": "^7.2.1",

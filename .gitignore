@@ -45,6 +45,16 @@ post/
 # MCP config contains API key
 .cursor/mcp.json
 
+# Cursor planning/analysis files (local AI artifacts)
+.cursor/plans/
+.cursor/CODEBASE_ANALYSIS.md
+
+# Design analysis artifacts (local, not for commit)
+design/
+
+# Skills lock file (local agent artifact)
+skills-lock.json
+
 # Agent/skills folders (local, not for commit)
 .agents/
 .agent/

@@ -1,6 +1,6 @@
 import { JetBrains_Mono, IBM_Plex_Sans, Source_Sans_3 } from "next/font/google";
 
-import Providers from "./providers";
+import ClientLayout from "./ClientLayout";
 
 import "./reset.css";
 import "./globals.css";
@@ -32,7 +32,7 @@ export default function RootLayout({
       className={`dark ${jetbrainsMono.variable} ${ibmPlexSans.variable} ${sourceSans3.variable}`}
     >
       <body className="min-h-screen bg-background font-sans text-foreground antialiased">
-        <Providers>{children}</Providers>
+        <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
   );

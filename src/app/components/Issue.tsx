@@ -33,6 +33,7 @@ interface IssueProps {
 
 export default function Issue({ issue }: IssueProps) {
   const [issueStatus, setIssueStatus] = useState(issue.status);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
   const [, updateIssueStatus] = useMutation(UPDATE_ISSUE_STATUS_MUTATION);
   const [, deleteIssue] = useMutation(DELETE_ISSUE_MUTATION);
 
@@ -43,8 +44,13 @@ export default function Issue({ issue }: IssueProps) {
     updateIssueStatus({ id: issue.id, status: newStatus });
   };
 
-  const onDelete = () => {
-    deleteIssue({ id: issue.id });
+  const onDelete = async () => {
+    setDeleteError(null);
+    const result = await deleteIssue({ id: issue.id });
+    if (result.error) {
+      setDeleteError("Failed to delete issue. Please try again.");
+      console.error("Failed to delete issue", result.error);
+    }
   };
 
   let preview = "—";
@@ -92,6 +98,9 @@ export default function Issue({ issue }: IssueProps) {
             <Trash2 size={16} />
           </Button>
         </div>
+        {deleteError && (
+          <p className="w-full text-xs text-danger">{deleteError}</p>
+        )}
       </CardBody>
     </Card>
   );
