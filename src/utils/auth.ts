@@ -19,8 +19,15 @@ export const getUserFromToken = async (header?: string) => {
   const token = (header.split("Bearer")[1] ?? "").trim();
 
   try {
-    const user = jwt.verify(token, SECRET) as { id: string; email: string; createdAt: string };
-    return { id: user.id, email: user.email, createdAt: user.createdAt };
+    const decoded = jwt.verify(token, SECRET) as { id: string; email?: string; createdAt?: string };
+    if (!decoded.email || !decoded.createdAt) {
+      const dbUser = await db.query.users.findFirst({
+        where: eq(users.id, decoded.id),
+        columns: { id: true, email: true, createdAt: true },
+      });
+      return dbUser;
+    }
+    return { id: decoded.id, email: decoded.email, createdAt: decoded.createdAt };
   } catch (e) {
     console.error("invalid jwt", e);
     return null;
