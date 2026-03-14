@@ -20,13 +20,11 @@ const resolvers = {
         throw new GraphQLError("UNAUTHORIZED", { extensions: { code: 401 } });
 
       try {
-        const user = await db
-          .select()
-          .from(users)
-          .where(eq(users.email, email))
-          .limit(1);
+        const user = await db.query.users.findFirst({
+          where: eq(users.email, email),
+        });
 
-        if (user.length === 0) {
+        if (!user) {
           throw new GraphQLError("User not found", {
             extensions: { code: "NOT_FOUND" },
           });
@@ -35,7 +33,7 @@ const resolvers = {
         return await db
           .select()
           .from(issues)
-          .where(eq(issues.userId, user[0].id))
+          .where(eq(issues.userId, user.id))
           .orderBy(desc(issues.createdAt));
       } catch (err) {
         if (err instanceof GraphQLError) throw err;
