@@ -1,6 +1,6 @@
 # Parallel App
 
-This next.js app fetches data using URQL (GraphQL client and front end data layer) and performs CRUD operation on Turso DB using GraphQL API and Drizzle ORM (back-end data layer)
+This app fetches data using URQL (GraphQL client and front end data layer) and performs operation on Turso DB using GraphQL API and Drizzle ORM (back-end data layer)
 
 ## App Screenshot
 
