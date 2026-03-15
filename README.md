@@ -4,7 +4,7 @@ This next.js app fetches data using URQL (GraphQL client and front end data laye
 
 ## App Screenshot
 
-![Parallel App screenshot](./public/app-screenshot.svg)
+![Parallel App screenshot](./public/app-screenshot.png)
 
 ## Tech Stack
 
