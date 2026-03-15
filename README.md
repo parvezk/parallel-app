@@ -2,6 +2,10 @@
 
 This next.js app fetches data using URQL (GraphQL client and front end data layer) and performs CRUD operation on Turso DB using GraphQL API and Drizzle ORM (back-end data layer)
 
+## App Screenshot
+
+![Parallel App screenshot](./public/app-screenshot.svg)
+
 ## Tech Stack
 
 Client (Browser) <-> Next.js App <-> URQL Client <-> GraphQL API <-> Drizzle ORM <-> TursoDB/SQLite
