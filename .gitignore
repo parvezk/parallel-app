@@ -42,3 +42,12 @@ next-env.d.ts
 tsconfig.tsbuildinfo
 
 post/
+# MCP config contains API key
+.cursor/mcp.json
+
+# Agent/skills folders (local, not for commit)
+.agents/
+.agent/
+skills/
+.claude/skills/
+.kiro/skills/

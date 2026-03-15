@@ -1,12 +1,17 @@
+"use client";
+
 import React from "react";
 import GQLProvider from "@/app/gqlProvider";
 import { UserProvider } from "@/app/context/UserContext";
+import { HeroUIProvider } from "@heroui/react";
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
-    <GQLProvider>
-      <UserProvider>{children}</UserProvider>
-    </GQLProvider>
+    <HeroUIProvider>
+      <GQLProvider>
+        <UserProvider>{children}</UserProvider>
+      </GQLProvider>
+    </HeroUIProvider>
   );
 };
 

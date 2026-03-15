@@ -19,8 +19,6 @@ const issue = {
   status: "BACKLOG",
 };
 
-const assets = {};
-
 describe("Create Issue", () => {
   beforeAll(() => {
     fetchMock = jest.fn();
@@ -42,14 +40,14 @@ describe("Create Issue", () => {
 
   test("onChange event is called to update the title on user input", async () => {
     render(<CreateIssue isOpen={jest.fn()} onOpenChange={jest.fn()} />);
-    const input = screen.getByPlaceholderText("Issue Title");
+    const input = screen.getByPlaceholderText("Issue title");
     await user.type(input, "title");
     expect(input).toHaveValue("title");
   });
 
   test("update the description on user input", async () => {
     render(<CreateIssue isOpen={jest.fn()} onOpenChange={jest.fn()} />);
-    const textarea = screen.getByPlaceholderText("Issue Description");
+    const textarea = screen.getByPlaceholderText("Issue description (optional)");
     await user.type(textarea, "description");
     expect(textarea).toHaveValue("description");
   });
@@ -64,9 +62,9 @@ describe("Create Issue", () => {
 
     render(<CreateIssue isOpen={jest.fn()} onOpenChange={jest.fn()} />);
 
-    const input = screen.getByPlaceholderText("Issue Title");
+    const input = screen.getByPlaceholderText("Issue title");
     await user.type(input, "title");
-    const textarea = screen.getByPlaceholderText("Issue Description");
+    const textarea = screen.getByPlaceholderText("Issue description (optional)");
     await user.type(textarea, "description");
 
     const createBtn = screen.getByRole("button", { name: /create/i });

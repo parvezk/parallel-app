@@ -1,12 +1,16 @@
 "use client";
+
 import React, { useEffect } from "react";
 import { isAuth } from "@/utils/token";
 import { redirect } from "next/navigation";
-import Sidebar from "@/components/Sidebar";
-import TopBar from "@/components/TopBar";
-import "./dashboard.css";
+import Sidebar from "@/app/components/Sidebar";
+import TopBar from "@/app/components/TopBar";
 
-const DashboardLayout = ({ children }) => {
+const DashboardLayout = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   useEffect(() => {
     if (!isAuth()) {
       redirect("/signin");
@@ -14,13 +18,14 @@ const DashboardLayout = ({ children }) => {
   }, []);
 
   return (
-    <div className="container" suppressHydrationWarning={true}>
+    <div
+      className="flex h-screen w-full flex-col bg-background"
+      suppressHydrationWarning
+    >
       <TopBar />
-      <section className="dashboard">
-        <aside>
-          <Sidebar />
-        </aside>
-        <main>{children}</main>
+      <section className="flex min-h-0 flex-1">
+        <Sidebar />
+        <main className="min-w-0 flex-1 overflow-auto">{children}</main>
       </section>
     </div>
   );
