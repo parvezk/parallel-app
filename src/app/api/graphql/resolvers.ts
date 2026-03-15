@@ -103,7 +103,6 @@ const resolvers = {
         throw new GraphQLError("CUSTOM Failed to create issue", {
           extensions: { code: "CREATE_ERROR" },
         });
-      console.log("issue created", newIssue);
       return newIssue;
     },
 

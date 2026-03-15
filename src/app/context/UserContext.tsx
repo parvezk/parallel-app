@@ -28,7 +28,6 @@ export const UserProvider = ({
     () => ({ theme, toggleTheme, user, setUser }),
     [theme, user]
   );
-  // Alternative: value={{ user, setUser, theme, toggleTheme }}>
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
 

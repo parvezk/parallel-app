@@ -53,7 +53,7 @@ export default function Issue({ issue }: IssueProps) {
   }
 
   return (
-    <Card className="border border-sky-500/25 bg-sky-500/10">
+    <Card className="border border-sky-500/25 bg-sky-500/10 transition-colors duration-150 ease-out">
       <CardBody className="flex flex-row flex-wrap items-center gap-2 gap-y-1 py-2 px-3">
         <div className="min-w-0 flex-1 basis-0">
           <h4 className="font-heading truncate text-sm font-medium text-foreground">
@@ -73,7 +73,7 @@ export default function Issue({ issue }: IssueProps) {
               handleStatusChange(v as string);
             }}
             className="w-36"
-            aria-label="Change status"
+            aria-label="Change issue status"
           >
             {STATUS_OPTIONS.map((opt) => (
               <SelectItem key={opt.value} textValue={opt.label}>

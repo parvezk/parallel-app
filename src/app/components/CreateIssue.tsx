@@ -16,14 +16,15 @@ import { CREATE_ISSUE_MUTATION } from "@/gql/CREATE_ISSUE_MUTATION";
 import { IssueStatus } from "@/db/schema";
 
 interface CreateIssueProps {
-  isOpen: boolean;
-  onOpenChange: () => void;
+  readonly isOpen: boolean;
+  readonly onOpenChange: (open: boolean) => void;
 }
 
 export default function CreateIssue({ isOpen, onOpenChange }: CreateIssueProps) {
   const [issueTitle, setIssueTitle] = useState("");
   const [issueDescription, setIssueDescription] = useState("");
   const [titleError, setTitleError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [, createNewIssue] = useMutation(CREATE_ISSUE_MUTATION);
 
   const reset = () => {
@@ -34,7 +35,7 @@ export default function CreateIssue({ isOpen, onOpenChange }: CreateIssueProps) 
 
   const handleClose = () => {
     reset();
-    onOpenChange();
+    onOpenChange(false);
   };
 
   const handleCreate = async () => {
@@ -43,6 +44,7 @@ export default function CreateIssue({ isOpen, onOpenChange }: CreateIssueProps) 
       return;
     }
     setTitleError("");
+    setIsSubmitting(true);
 
     const result = await createNewIssue({
       input: {
@@ -52,6 +54,7 @@ export default function CreateIssue({ isOpen, onOpenChange }: CreateIssueProps) 
       },
     });
 
+    setIsSubmitting(false);
     if (result.error) {
       setTitleError(result.error.message);
       return;
@@ -96,10 +99,20 @@ export default function CreateIssue({ isOpen, onOpenChange }: CreateIssueProps) 
           />
         </ModalBody>
         <ModalFooter>
-          <Button variant="light" onPress={handleClose}>
+          <Button
+            variant="light"
+            onPress={handleClose}
+            isDisabled={isSubmitting}
+          >
             Cancel
           </Button>
-          <Button color="warning" className="text-black" onPress={handleCreate}>
+          <Button
+            color="warning"
+            className="text-black"
+            onPress={handleCreate}
+            isLoading={isSubmitting}
+            isDisabled={isSubmitting}
+          >
             Create Issue
           </Button>
         </ModalFooter>

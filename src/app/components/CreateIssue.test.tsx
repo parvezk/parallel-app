@@ -30,23 +30,23 @@ describe("Create Issue", () => {
   });
 
   test("renders without error", () => {
-    render(<CreateIssue isOpen={jest.fn()} onOpenChange={jest.fn()} />);
+    render(<CreateIssue isOpen={true} onOpenChange={jest.fn()} />);
   });
 
   test("renders title", () => {
-    render(<CreateIssue isOpen={jest.fn()} onOpenChange={jest.fn()} />);
+    render(<CreateIssue isOpen={true} onOpenChange={jest.fn()} />);
     expect(screen.getByText("New Issue")).toBeInTheDocument();
   });
 
   test("onChange event is called to update the title on user input", async () => {
-    render(<CreateIssue isOpen={jest.fn()} onOpenChange={jest.fn()} />);
+    render(<CreateIssue isOpen={true} onOpenChange={jest.fn()} />);
     const input = screen.getByPlaceholderText("Issue title");
     await user.type(input, "title");
     expect(input).toHaveValue("title");
   });
 
   test("update the description on user input", async () => {
-    render(<CreateIssue isOpen={jest.fn()} onOpenChange={jest.fn()} />);
+    render(<CreateIssue isOpen={true} onOpenChange={jest.fn()} />);
     const textarea = screen.getByPlaceholderText("Issue description (optional)");
     await user.type(textarea, "description");
     expect(textarea).toHaveValue("description");
@@ -60,7 +60,7 @@ describe("Create Issue", () => {
     });
     (useMutation as jest.Mock).mockReturnValue([{}, mockCreateIssue]);
 
-    render(<CreateIssue isOpen={jest.fn()} onOpenChange={jest.fn()} />);
+    render(<CreateIssue isOpen={true} onOpenChange={jest.fn()} />);
 
     const input = screen.getByPlaceholderText("Issue title");
     await user.type(input, "title");

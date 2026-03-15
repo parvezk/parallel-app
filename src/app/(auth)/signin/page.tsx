@@ -47,6 +47,9 @@ const SigninPage = () => {
             onValueChange={(v) => setState((s) => ({ ...s, email: v }))}
             variant="faded"
             label="Email"
+            type="email"
+            autoComplete="email"
+            isRequired
           />
           <Input
             variant="faded"
@@ -54,6 +57,8 @@ const SigninPage = () => {
             onValueChange={(v) => setState((s) => ({ ...s, password: v }))}
             label="Password"
             type="password"
+            autoComplete="current-password"
+            isRequired
           />
           <Button
             type="submit"
