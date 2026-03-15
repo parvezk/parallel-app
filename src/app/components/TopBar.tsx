@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useQuery } from "urql";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Menu } from "lucide-react";
+import { Menu, X } from "lucide-react";
 
 import { useUserContext } from "@/app/context/UserContext";
 import { USERS_QUERY } from "@/gql/USERS_QUERY";
@@ -99,11 +99,13 @@ const TopBar = () => {
             <div className="flex items-center justify-between border-b border-default-200 pb-3">
               <span className="font-heading font-semibold">Menu</span>
               <Button
+                isIconOnly
                 size="sm"
                 variant="light"
+                aria-label="Close menu"
                 onPress={() => setMobileMenuOpen(false)}
               >
-                Close
+                <X size={20} />
               </Button>
             </div>
             <SidebarNavLinks onNavigate={() => setMobileMenuOpen(false)} />

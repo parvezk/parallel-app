@@ -53,7 +53,7 @@ export default function IssuesPage() {
       )}
 
       {!fetching && !error && isEmpty && (
-        <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-default-300 bg-default-50/50 py-16 text-center">
+        <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-default-300 bg-default-50/50 px-6 py-16 text-center">
           <p className="text-default-600">No issues yet.</p>
           <Button
             color="warning"

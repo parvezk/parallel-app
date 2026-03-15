@@ -28,7 +28,7 @@ export default function SidebarNavLinks({
             <Link
               href={item.href}
               onClick={onNavigate}
-              className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+              className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors duration-150 ease-out ${
                 isActive
                   ? "bg-primary/20 text-primary"
                   : "text-default-600 hover:bg-default-100 hover:text-foreground"

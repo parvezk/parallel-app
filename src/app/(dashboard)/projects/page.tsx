@@ -10,7 +10,7 @@ export default function ProjectsPage() {
       <h1 className="font-heading text-2xl font-semibold text-foreground">
         Projects
       </h1>
-      <div className="rounded-lg border border-dashed border-default-300 bg-default-50/30 p-8 text-center">
+      <div className="rounded-lg border border-dashed border-default-300 bg-default-50/30 px-6 py-12 text-center">
         <p className="text-default-600">Projects coming soon.</p>
         {user?.createdAt && (
           <p className="mt-2 text-sm text-default-400">

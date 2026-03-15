@@ -37,7 +37,7 @@ describe("Issue", () => {
 
   test("changes issue status", async () => {
     render(<Issue issue={issue} />);
-    const trigger = screen.getByRole("button", { name: /change status/i });
+    const trigger = screen.getByRole("button", { name: /change issue status/i });
     expect(trigger).toBeInTheDocument();
 
     await userEvent.click(trigger);
