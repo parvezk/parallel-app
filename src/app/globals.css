@@ -1,50 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
-  --bg-light: #ffffff;
-  --foreground-light: #171717;
-  --bg-dark: #0a0a0a;
-  --foreground-dark: #ededed;
+  /* Design tokens from spec (navy/teal/mustard palette) */
+  --color-navy-primary: #0d1b2a;
+  --color-navy-accent: #1b263b;
+  --color-teal-deep: #115e59;
+  --color-teal-primary: #14b8a6;
+  --color-mustard: #d4a853;
+  --color-sky: #7dd3fc;
+  --color-neutral: #e8e8e2;
+  --radius: 0.5rem;
+  --transition: 150ms ease;
 }
 
-body {
-  color: var(--foreground);
-  background: var(--bg);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-[data-theme="dark"] {
-  --bg: var(--bg-dark);
-  --foreground: var(--foreground-dark);
-}
-
-[data-theme="light"] {
-  --bg: var(--bg-light);
-  --foreground: var(--foreground-light);
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+@layer base {
+  body {
+    font-family: var(--font-sans), system-ui, sans-serif;
   }
-}
-
-.container {
-  display: grid;
-  grid-template-columns: auto;
-  grid-template-rows: 30px 1fr;
-  height: 100vh;
-  width: 60%;
-}
-.top-bar {
-  padding: 5px;
-  display: flex;
-  justify-content: space-between;
-  background: linear-gradient(rgba(0, 89, 136, 0.5), transparent);
-
-  .top-right {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  h1, h2, h3, h4 {
+    font-family: var(--font-heading), system-ui, sans-serif;
   }
 }

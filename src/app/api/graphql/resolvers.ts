@@ -16,7 +16,8 @@ const resolvers = {
       { email }: { email: string },
       context: GQLContext,
     ) => {
-      if (!context.user)
+      const authUser = await context.getUser();
+      if (!authUser)
         throw new GraphQLError("UNAUTHORIZED", { extensions: { code: 401 } });
 
       try {
@@ -113,7 +114,7 @@ const resolvers = {
       const [updatedIssue] = await db
         .update(issues)
         .set({ [issues.status.name]: status })
-        .where(and(eq(issues.id, id), eq(issues.userId, context.user.id)))
+        .where(and(eq(issues.id, id), eq(issues.userId, user.id)))
         .returning();
 
       if (!updatedIssue)
@@ -130,7 +131,7 @@ const resolvers = {
 
       const [deletedIssue] = await db
         .delete(issues)
-        .where(and(eq(issues.id, id), eq(issues.userId, context.user.id)))
+        .where(and(eq(issues.id, id), eq(issues.userId, user.id)))
         .returning();
 
       if (!deletedIssue)

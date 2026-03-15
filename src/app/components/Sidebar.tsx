@@ -1,30 +1,14 @@
+"use client";
+
 import React from "react";
-import { Boxes, LayoutGrid, Settings } from "lucide-react";
-import Link from "next/link";
+import SidebarNavLinks from "@/app/components/SidebarNavLinks";
 
-const links = [
-  { href: "/", name: "Issues", Icon: Boxes },
-  { href: "/projects", name: "Projects", Icon: LayoutGrid },
-  { href: "/settings", name: "Settings", Icon: Settings },
-];
-
-const Sidebar = () => {
+export default function Sidebar() {
   return (
-    <div className="sidebar">
-      <ul>
-        {links.map((link) => {
-          return (
-            <li key={link.href}>
-              <Link href={link.href}>
-                <link.Icon size={16} />
-                <span>{link.name}</span>
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
-    </div>
+    <aside className="hidden w-52 shrink-0 border-r border-default-200/50 bg-background/95 md:block">
+      <nav className="sticky top-0 flex flex-col gap-2 p-3">
+        <SidebarNavLinks />
+      </nav>
+    </aside>
   );
-};
-
-export default Sidebar;
+}

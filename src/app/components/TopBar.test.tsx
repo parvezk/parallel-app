@@ -42,13 +42,10 @@ jest.mock("next/navigation", () => ({
 
 describe("TopBar", () => {
   const mockSetUser = jest.fn();
-  const mockToggleTheme = jest.fn();
 
   beforeEach(() => {
     jest.clearAllMocks();
     (useUserContext as jest.Mock).mockReturnValue({
-      theme: "light",
-      toggleTheme: mockToggleTheme,
       setUser: mockSetUser,
     });
 
@@ -88,14 +85,7 @@ describe("TopBar", () => {
       jest.fn(),
     ]);
     render(<TopBar />);
-    expect(screen.getByText("Error: Error occurred")).toBeInTheDocument();
-  });
-
-  test("toggles theme on button click", () => {
-    render(<TopBar />);
-    const button = screen.getByText("Dark Theme");
-    fireEvent.click(button);
-    expect(mockToggleTheme).toHaveBeenCalled();
+    expect(screen.getByText("Error")).toBeInTheDocument();
   });
 
   test("sets user on data change", () => {

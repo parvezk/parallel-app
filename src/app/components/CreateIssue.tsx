@@ -1,79 +1,109 @@
+"use client";
+
 import React, { useState } from "react";
 import { useMutation } from "urql";
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button,
+  Input,
+  Textarea,
+} from "@heroui/react";
 import { CREATE_ISSUE_MUTATION } from "@/gql/CREATE_ISSUE_MUTATION";
 import { IssueStatus } from "@/db/schema";
 
-const CreateIssue = ({ isOpen, onOpenChange }) => {
+interface CreateIssueProps {
+  isOpen: boolean;
+  onOpenChange: () => void;
+}
+
+export default function CreateIssue({ isOpen, onOpenChange }: CreateIssueProps) {
   const [issueTitle, setIssueTitle] = useState("");
   const [issueDescription, setIssueDescription] = useState("");
-  const [_, createNewIssue] = useMutation(CREATE_ISSUE_MUTATION);
+  const [titleError, setTitleError] = useState("");
+  const [, createNewIssue] = useMutation(CREATE_ISSUE_MUTATION);
 
-  const onCreate = async (close) => {
-    const input = {
-      title: issueTitle,
-      content: issueDescription,
-      status: IssueStatus.BACKLOG,
-    };
+  const reset = () => {
+    setIssueTitle("");
+    setIssueDescription("");
+    setTitleError("");
+  };
 
-    const result = await createNewIssue({ input });
+  const handleClose = () => {
+    reset();
+    onOpenChange();
+  };
+
+  const handleCreate = async () => {
+    if (!issueTitle.trim()) {
+      setTitleError("Title is required");
+      return;
+    }
+    setTitleError("");
+
+    const result = await createNewIssue({
+      input: {
+        title: issueTitle.trim(),
+        content: issueDescription.trim(),
+        status: IssueStatus.BACKLOG,
+      },
+    });
 
     if (result.error) {
-      console.error("Failed to create issue", result.error);
-    } else {
-      console.log("Issue created", result.data.createIssue);
-      close();
+      setTitleError(result.error.message);
+      return;
     }
+    handleClose();
   };
 
   return (
-    <div
-      className={`modal ${isOpen ? "modal-open" : "modal-closed"}`}
-      role="dialog"
+    <Modal
+      isOpen={isOpen}
+      onOpenChange={(open) => {
+        if (!open) handleClose();
+      }}
+      placement="center"
     >
-      <div className="modal-content">
-        <form>
-          <div className="modal-header">
-            <span>New Issue</span>
-          </div>
-          <div className="modal-body">
-            <div>
-              <input
-                autoFocus
-                required
-                type="text"
-
-                placeholder="Issue Title"
-                value={issueTitle}
-                onChange={(e) => setIssueTitle(e.target.value)}
-              />
-            </div>
-            <div>
-              <textarea
-
-                placeholder="Issue Description"
-                rows={3}
-                cols={30}
-                value={issueDescription}
-                onChange={(e) => setIssueDescription(e.target.value)}
-              />
-            </div>
-          </div>
-          <div className="modal-footer">
-            <button type="button" name="cancel" onClick={() => onOpenChange()}>
-              Cancel
-            </button>
-            <button
-              type="button"
-              name="create"
-              onClick={() => onCreate(() => onOpenChange())}
-            >
-              Create Issue
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+      <ModalContent>
+        <ModalHeader className="font-heading font-semibold">
+          New Issue
+        </ModalHeader>
+        <ModalBody>
+          <Input
+            label="Title"
+            placeholder="Issue title"
+            value={issueTitle}
+            onValueChange={(v) => {
+              setIssueTitle(v);
+              if (titleError) setTitleError("");
+            }}
+            isInvalid={!!titleError}
+            errorMessage={titleError}
+            isRequired
+            autoFocus
+            variant="faded"
+          />
+          <Textarea
+            label="Description"
+            placeholder="Issue description (optional)"
+            value={issueDescription}
+            onValueChange={setIssueDescription}
+            minRows={3}
+            variant="faded"
+          />
+        </ModalBody>
+        <ModalFooter>
+          <Button variant="light" onPress={handleClose}>
+            Cancel
+          </Button>
+          <Button color="warning" className="text-warning-foreground" onPress={handleCreate}>
+            Create Issue
+          </Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
   );
-};
-
-export default CreateIssue;
+}
