@@ -5,6 +5,11 @@ export function middleware(req: NextRequest) {
   const allowedOriginsStr = process.env.ALLOWED_ORIGINS || "";
   const allowedOrigins = allowedOriginsStr.split(",").map(origin => origin.trim()).filter(Boolean);
 
+  // Always allow Apollo Studio for GraphQL exploration
+  if (!allowedOrigins.includes("https://studio.apollographql.com")) {
+    allowedOrigins.push("https://studio.apollographql.com");
+  }
+
   // Get the origin of the incoming request
   const requestOrigin = req.headers.get("origin") || "";
 
@@ -17,7 +22,8 @@ export function middleware(req: NextRequest) {
   const responseHeaders = {
     "Access-Control-Allow-Origin": originToSet,
     "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    "Access-Control-Allow-Headers": "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization",
+    "Access-Control-Allow-Credentials": "true",
     "Vary": "Origin",
   };
 
