@@ -6,10 +6,8 @@ import { graphql } from "graphql";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 // locals
 import resolvers from "./resolvers";
-import header from "@/utils/headers";
 import { getUserFromToken } from "@/utils/auth";
 import typeDefs from "./typeDefs";
-// import typeDefs from "./schema.graphql";
 
 // Create the GraphQL schema with resolvers
 const schema = makeExecutableSchema({
@@ -41,9 +39,7 @@ export async function POST(req: NextRequest) {
       contextValue: context(req),
     });
 
-    const headers = new Headers(header);
-
-    return NextResponse.json(response, { headers });
+    return NextResponse.json(response);
   } catch (error) {
     console.error("API Error:", error); // Log error details
     return NextResponse.json(
@@ -53,10 +49,8 @@ export async function POST(req: NextRequest) {
   }
 }
 
+// OPTIONS requests are handled completely by middleware.ts now
+// So we can omit the OPTIONS handler here, or keep it empty
 export async function OPTIONS() {
-  const response = new NextResponse(null, {
-    status: 204,
-    headers: header,
-  });
-  return response;
+  return new NextResponse(null, { status: 204 });
 }
