@@ -5,8 +5,11 @@ export function middleware(req: NextRequest) {
   const allowedOriginsStr = process.env.ALLOWED_ORIGINS || "";
   const allowedOrigins = allowedOriginsStr.split(",").map(origin => origin.trim()).filter(Boolean);
 
-  // Always allow Apollo Studio for GraphQL exploration
-  if (!allowedOrigins.includes("https://studio.apollographql.com")) {
+  // Allow Apollo Studio for GraphQL exploration in non-production environments
+  if (
+    process.env.NODE_ENV !== "production" &&
+    !allowedOrigins.includes("https://studio.apollographql.com")
+  ) {
     allowedOrigins.push("https://studio.apollographql.com");
   }
 
