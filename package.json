@@ -2,6 +2,7 @@
   "name": "parallel-app",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@9.15.0",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -15,7 +16,7 @@
     "docs:generate": "cd docs && npx docusaurus graphql-to-doc",
     "docs:start": "cd docs && npm start -- --port 3001",
     "docs:build": "cd docs && npm run build",
-    "test": "NODE_OPTIONS=--experimental-vm-modules node --no-deprecation ./node_modules/.bin/jest --runInBand",
+    "test": "NODE_OPTIONS=--experimental-vm-modules node --no-deprecation ./node_modules/jest/bin/jest.js --runInBand",
     "test:coverage": "jest --coverage",
     "test:coverage:changed": "jest --coverage --onlyChanged",
     "test:watch": "NODE_OPTIONS=--experimental-vm-modules jest --watch",
