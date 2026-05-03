@@ -36,7 +36,7 @@ export const getUserFromToken = async (header?: string) => {
 
 export const signin = async ({
   email,
-  password,
+  password: inputPassword,
 }: {
   email: string;
   password: string;
@@ -46,12 +46,12 @@ export const signin = async ({
   });
 
   if (!match) return null;
-  const correctPW = await comparePW(password, match.password);
+  const correctPW = await comparePW(inputPassword, match.password);
 
   if (!correctPW) return null;
 
   const token = createTokenForUser(match);
-  const { password, ...user } = match;
+  const { password: _password, ...user } = match;
 
   return { user, token };
 };
@@ -63,6 +63,10 @@ export const signup = async ({
   email: string;
   password: string;
 }) => {
+  if (password.length < 8) {
+    throw new Error('Password must be at least 8 characters long');
+  }
+
   const hashedPW = await hashPW(password);
   const rows = await db
     .insert(users)

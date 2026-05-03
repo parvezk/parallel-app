@@ -1,0 +1,10 @@
+🔒 [security fix missing password complexity]
+
+🎯 What:
+The `signup` function in `src/utils/auth.ts` immediately hashes passwords without validating length or complexity, allowing users to register with trivial, weak, or completely blank passwords.
+
+⚠️ Risk:
+Attackers could easily compromise user accounts that have weak passwords. There's also the risk of dictionary attacks or brute forcing succeeding rapidly on accounts with simple passwords.
+
+🛡️ Solution:
+Added a check within `signup` to verify the `password` argument is at least 8 characters long before proceeding to hash it. If it fails the check, an error is thrown. This blocks registration with inherently insecure passwords. Also wrote unit tests to verify the length restriction is enforced properly. Fixed lint errors along the way.

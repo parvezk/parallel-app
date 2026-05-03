@@ -47,7 +47,6 @@ module.exports = {
     "/src/lib/",
     "/src/gql/",
     "/src/db/",
-    "/src/utils/",
     // TopBar.test conflicts with --experimental-vm-modules (Jest torn-down error)
     "TopBar.test",
   ],
