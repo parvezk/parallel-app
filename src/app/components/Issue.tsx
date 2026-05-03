@@ -15,6 +15,14 @@ const STATUS_OPTIONS = [
   { value: IssueStatus.DONE, label: "Done" },
 ];
 
+
+const STATUS_LABEL: Record<IssueStatus, string> = {
+  [IssueStatus.BACKLOG]: "Backlog",
+  [IssueStatus.TODO]: "To do",
+  [IssueStatus.IN_PROGRESS]: "In progress",
+  [IssueStatus.DONE]: "Done",
+};
+
 const STATUS_COLOR: Record<IssueStatus, "default" | "primary" | "secondary" | "success" | "warning"> = {
   [IssueStatus.BACKLOG]: "default",
   [IssueStatus.TODO]: "secondary",
@@ -63,7 +71,7 @@ export default function Issue({ issue }: IssueProps) {
         </div>
         <div className="flex items-center gap-2">
           <Chip size="sm" color={STATUS_COLOR[issueStatus]} variant="flat">
-            {STATUS_OPTIONS.find((o) => o.value === issueStatus)?.label || issueStatus}
+            {STATUS_LABEL[issueStatus] || issueStatus}
           </Chip>
           <Select
             size="sm"
