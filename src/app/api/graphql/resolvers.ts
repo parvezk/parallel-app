@@ -73,16 +73,7 @@ const resolvers = {
           extensions: { code: 401 },
         });
 
-      const user = await db.query.users.findFirst({
-        where: eq(users.id, currentUser.id as string),
-      });
-
-      if (!user)
-        throw new GraphQLError("User not found", {
-          extensions: { code: "NOT_FOUND" },
-        });
-
-      return user;
+      return currentUser;
     },
   },
 
