@@ -1,5 +1,5 @@
 "use client";
-import React, { PropsWithChildren, useMemo } from "react";
+import { PropsWithChildren, useMemo } from "react";
 import { Provider, createClient, cacheExchange, fetchExchange } from "urql";
 //local
 import { getToken } from "@/utils/token";
