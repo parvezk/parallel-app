@@ -4,7 +4,11 @@ import { eq } from "drizzle-orm";
 import { users } from "@/db/schema";
 import bcrypt from "bcrypt";
 
-const SECRET = "use_an_ENV_VAR";
+const SECRET = process.env.JWT_SECRET || "use_an_ENV_VAR";
+
+if (process.env.NODE_ENV === "production" && SECRET === "use_an_ENV_VAR") {
+  throw new Error("JWT_SECRET environment variable is not set in production");
+}
 
 export const createTokenForUser = (user: { id: string; email: string; createdAt: string }) => {
   const token = jwt.sign({ id: user.id, email: user.email, createdAt: user.createdAt }, SECRET);
@@ -51,7 +55,7 @@ export const signin = async ({
   if (!correctPW) return null;
 
   const token = createTokenForUser(match);
-  const { password, ...user } = match;
+  const { password: _password, ...user } = match;
 
   return { user, token };
 };
